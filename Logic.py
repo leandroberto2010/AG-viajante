@@ -1,5 +1,7 @@
 import numpy as np
 from Cromosoma import Cromosoma
+import matplotlib.pyplot as plt
+import copy as cp
 
 def generarPoblacion(cantidad, startingCity):
     poblacion=np.array([], dtype=int)
@@ -15,7 +17,7 @@ def evaluarPoblacion(poblacion):
     for p in poblacion:
         total+= p.getDistancia()
     for p in poblacion:
-        p.setFitness(p.getDistancia()/total)
+        p.setFitness(1-(p.getDistancia()/total))
     indicesOrdenados=np.argsort([p.fitness for p in poblacion])
     poblacion=poblacion[indicesOrdenados]
 
@@ -71,7 +73,7 @@ def crossover(padres, mutRate, crossRate):
         if mutRate > np.random.random():
             mutacion(hijo2)
         
-        return hijo1, hijo2
+        return cp.deepcopy(hijo1), cp.deepcopy(hijo2)
 
 
 def mutacion(cromosoma):
@@ -99,4 +101,17 @@ def ruleta(poblacion):
             if acum >= peso:
                 padres.append(ind)
                 break
-    return padres
+    return cp.deepcopy(padres)
+
+def save_data(maximos, minimos, poblacion):
+    minimos.append(poblacion[0].getDistancia())
+    maximos.append(poblacion[len(poblacion)-1].getDistancia())
+
+def graficar(maximos, minimos):
+    plt.plot(minimos, color="red", label="minimos")
+    plt.plot(maximos, color="green", label="maximos")
+
+    plt.legend()
+    plt.ylabel("distancia", fontsize="20")
+    plt.xlabel("Ciclos", fontsize="20")
+    plt.show()
