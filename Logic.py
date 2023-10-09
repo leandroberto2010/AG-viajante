@@ -1,5 +1,5 @@
 import numpy as np
-import Cromosoma
+from Cromosoma import Cromosoma
 
 def generarPoblacion(cantidad, startingCity):
     poblacion=np.array([], dtype=int)
@@ -11,11 +11,13 @@ def generarPoblacion(cantidad, startingCity):
     return poblacion
 
 def evaluarPoblacion(poblacion):
+    total=0
     for p in poblacion:
         total+= p.getDistancia()
     for p in poblacion:
         p.setFitness(p.getDistancia()/total)
-    poblacion.sort(key=lambda x: x.fitness)
+    indicesOrdenados=np.argsort([p.fitness for p in poblacion])
+    poblacion=poblacion[indicesOrdenados]
 
 def crossover(padres, mutRate, crossRate):
     r1=padres[0].getRecorrido()
@@ -32,12 +34,12 @@ def crossover(padres, mutRate, crossRate):
 
         h1=hijo1.getRecorrido()
         h2=hijo2.getRecorrido()
-        puntoInicio=np.random.randint(len(r1)-1)
+        puntoInicio=np.random.randint(1, len(r1)-1)
         puntoActual=puntoInicio
 
         while True:
             h1[puntoActual] = r1[puntoActual]
-            puntoActual=np.where(r1==r2[puntoActual][0][0])#Los [0][0] estan para que me devuelva el primer valor, y no un array de valores de tamaño 1
+            puntoActual=np.where(r1==r2[puntoActual])[0][0]#Los [0][0] estan para que me devuelva el primer valor, y no un array de valores de tamaño 1
             if puntoActual==puntoInicio:
                 break
         
@@ -46,12 +48,12 @@ def crossover(padres, mutRate, crossRate):
     #Repito para hijo2
         while True:
             h2[puntoActual] = r2[puntoActual]
-            puntoActual=np.where(r2==r1[puntoActual][0][0])
+            puntoActual=np.where(r2==r1[puntoActual])[0][0]
             if puntoActual==puntoInicio:
                 break
         
     #Reemplazo los valores -1 por los valores que tienen los padres en cada hijo usando el padre opuesto
-        for i in range(len(r1)-1):
+        for i in range(len(r1)):
             if h1[i]==-1:
                 h1[i]=r2[i]
             
@@ -73,8 +75,9 @@ def crossover(padres, mutRate, crossRate):
 
 
 def mutacion(cromosoma):
-    pos1=np.random.randint(len(cromosoma.getRecorrido())-1)
-    pos2=np.random.randint(len(cromosoma.getRecorrido())-1)
+     
+    pos1=np.random.randint(1, len(cromosoma.getRecorrido())-1)
+    pos2=np.random.randint(1, len(cromosoma.getRecorrido())-1)
 
     m1=cromosoma.getRecorrido()
     
