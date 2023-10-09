@@ -21,7 +21,7 @@ def crossover(padres, mutRate, crossRate):
     r1=padres[0].getRecorrido()
     r2=padres[1].getRecorrido()
 
-    if np.random.random()<crossRate:
+    if crossRate > np.random.random():
         return padres
     else:
     
@@ -64,9 +64,9 @@ def crossover(padres, mutRate, crossRate):
         hijo1.setDistancia(hijo1.calcularDistancia())
         hijo2.setDistancia(hijo2.calcularDistancia())
 
-        if np.random.random()>mutRate:
+        if mutRate > np.random.random():
             mutacion(hijo1)
-        if np.random.random()>mutRate:
+        if mutRate > np.random.random():
             mutacion(hijo2)
         
         return hijo1, hijo2
