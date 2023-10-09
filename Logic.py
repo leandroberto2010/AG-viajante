@@ -21,7 +21,7 @@ def crossover(padres, mutRate, crossRate):
     r1=padres[0].getRecorrido()
     r2=padres[1].getRecorrido()
 
-    if crossRate > np.random.random():
+    if crossRate < np.random.random():
         return padres
     else:
     
