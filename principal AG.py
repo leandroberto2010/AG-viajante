@@ -9,23 +9,23 @@ mutRate=0.05
 crossRate=0.30
 minimos=[]
 maximos=[]
+nuevaPoblacion=[]
 
 def start():
-    poblacion=logic.generarPoblacion(cantPob, 1)
+    poblacion=cp.deepcopy(logic.generarPoblacion(cantPob, 1))
     logic.evaluarPoblacion(poblacion)
     logic.save_data(maximos, minimos, poblacion)
     for i in range(ciclos):
-        if i==10:
-            print("100 ciclos")
-        if i==199:
-            print('breaking')
-        nuevaPoblacion=np.array([])
+        nuevaPoblacion.clear()
         while len(nuevaPoblacion)<len(poblacion):
             padres=cp.deepcopy(logic.ruleta(poblacion))
-            nuevaPoblacion=np.append(nuevaPoblacion, logic.crossover(padres, crossRate, mutRate))
+            hijos=cp.deepcopy(logic.crossover(padres, crossRate, mutRate))
+            for ind in hijos:
+                nuevaPoblacion.append(cp.deepcopy(ind))
         logic.evaluarPoblacion(nuevaPoblacion)
-        poblacion=np.array([])
-        poblacion=np.append(poblacion, (cp.deepcopy(nuevaPoblacion)))
+        poblacion.clear()
+        for ind in nuevaPoblacion:
+            poblacion.append(cp.deepcopy(ind))
         logic.save_data(maximos, minimos, poblacion)
 
     poblacion[0].imprimirRecorrido()
