@@ -10,6 +10,7 @@ crossRate=0.30
 minimos=[]
 maximos=[]
 nuevaPoblacion=[]
+metodo='torneo'
 
 def start():
     poblacion=cp.deepcopy(logic.generarPoblacion(cantPob, 1))
@@ -18,7 +19,10 @@ def start():
     for i in range(ciclos):
         nuevaPoblacion.clear()
         while len(nuevaPoblacion)<len(poblacion):
-            padres=cp.deepcopy(logic.ruleta(poblacion))
+            if (metodo=='torneo'):
+                padres=cp.deepcopy(logic.torneo(poblacion))
+            else:
+                padres=cp.deepcopy(logic.ruleta(poblacion))
             hijos=cp.deepcopy(logic.crossover(padres, crossRate, mutRate))
             for ind in hijos:
                 nuevaPoblacion.append(cp.deepcopy(ind))

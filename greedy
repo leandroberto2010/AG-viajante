@@ -1,0 +1,44 @@
+import pandas as pd
+import numpy as np
+
+df=pd.read_excel('TablaCapitales.xlsx', header=None)
+datos=df.to_numpy()
+recorrido=[]
+
+def buscarCiudades(ciudad):
+    dist_minima = float('inf')
+    ciudadmin= float('inf')
+    for i in range(24):
+        if ((i+1 != ciudad) and (i+1 not in recorrido)):
+            dist=int(datos[ciudad, i+1])
+            if (dist < dist_minima):
+                ciudadmin=i+1
+                dist_minima=int(datos[ciudad, i+1])
+    return ciudadmin
+
+def generarRecorrido(startingCity):
+    recorrido.append(startingCity)
+    ciudad_actual=buscarCiudades(startingCity)
+    while (len(recorrido)<24):
+        recorrido.append(ciudad_actual)
+        if (len(recorrido)<24):
+            ciudad_actual=buscarCiudades(ciudad_actual)
+    recorrido.append(startingCity)
+
+
+            
+def imprimir():
+    for i in range(len(recorrido)-1):
+        print(i, datos[0, recorrido[i]])
+    print ('Distancia: ', calcularDist())
+
+def calcularDist():
+    sum=0
+    for i in range (len(recorrido)-1):
+        sum+=int(datos[recorrido[i], recorrido[i+1]])
+    return sum
+
+
+
+generarRecorrido(1) #el numero indica de donde empezar, cada numero representa una ciudad en el orden que esta en tabla
+imprimir()
