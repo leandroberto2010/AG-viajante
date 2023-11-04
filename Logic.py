@@ -102,6 +102,17 @@ def ruleta(poblacion):
                 break
     return cp.deepcopy(padres)
 
+def torneo(poblacion):
+    padres=[]
+    contendientes=[]
+    while len(padres)<2:
+        contendientes.clear()
+        while len(contendientes)<4:
+            pos=np.random.randint(0, 24)
+            contendientes.append(poblacion[pos])
+        padres.append(max(contendientes, key=lambda x: x.fitness))
+    return cp.deepcopy(padres)
+
 def save_data(maximos, minimos, poblacion):
     minimos.append(min(poblacion, key=lambda x: x.totalDist).getDistancia())
     maximos.append(max(poblacion, key=lambda x: x.totalDist).getDistancia())
