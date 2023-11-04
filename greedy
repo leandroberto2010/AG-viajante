@@ -28,7 +28,7 @@ def generarRecorrido(startingCity):
 
             
 def imprimir():
-    for i in range(len(recorrido)-1):
+    for i in range(len(recorrido)):
         print(i, datos[0, recorrido[i]])
     print ('Distancia: ', calcularDist())
 
@@ -40,5 +40,5 @@ def calcularDist():
 
 
 
-generarRecorrido(1) #el numero indica de donde empezar, cada numero representa una ciudad en el orden que esta en tabla
+generarRecorrido(20) #el numero indica de donde empezar, cada numero representa una ciudad en el orden que esta en tabla
 imprimir()

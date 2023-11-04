@@ -3,17 +3,18 @@ import Logic as logic
 import numpy as np
 import copy as cp
 
-ciclos=200
+ciclos=1000
 cantPob=50
 mutRate=0.05
 crossRate=0.30
 minimos=[]
 maximos=[]
 nuevaPoblacion=[]
-metodo='torneo'
+metodo='ruleta'
+startingCity=20
 
 def start():
-    poblacion=cp.deepcopy(logic.generarPoblacion(cantPob, 1))
+    poblacion=cp.deepcopy(logic.generarPoblacion(cantPob, startingCity))
     logic.evaluarPoblacion(poblacion)
     logic.save_data(maximos, minimos, poblacion)
     for i in range(ciclos):
